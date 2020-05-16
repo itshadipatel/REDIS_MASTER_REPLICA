@@ -1,0 +1,44 @@
+Create a Replica/Slave of Master Redis on a new server
+1>Login into the new server
+RUN REDIS SERVER
+1> run Command
+$ redis-server
+
+2> IF ALREADY RUNNING THEN FIND THE PROCESS ID AND KILL IT
+    Find the redis process id
+    ps aux | grep redis
+     
+    Kill the redis process
+    kill -9 PROCESS_ID
+
+3> THEN RUN AGAIN redis-server
+now the server will show you the messages at runtime so make sure you take a look at it after executing the redis commands
+
+4> OPEN A NEW TAB (You might need to login into the server again. )
+run command
+$ redis-cli
+This will show
+127.0.0.1:6379>
+
+5> Verify Your Redis Server is Working
+127.0.0.1:6379> ping
+ PONG  <----------- OUTPUT
+
+6> CONFIGURE THE MASTER with AUTHENTICATION
+127.0.0.1:6379> config set masterauth YOUR_AUTH_KEY_GOES_HERE
+OK   <---------------- OUTPUT
+
+7>
+127.0.0.1:6379> REPLICAOF MASTER_HOSTNAME PORT
+OK
+
+8> CHECK redis-server tab for ANY MESSAGES
+IF SUCCESS THEN IT WILL PRINT THE SUCCESS MESSAGE
+last 3 line of the message would be
+ * MASTER <-> REPLICA sync: Flushing old data
+ * MASTER <-> REPLICA sync: Loading DB in memory
+ * MASTER <-> REPLICA sync: Finished with success
+
+9> note:- If you encounter this error,
+-- Can't handle RDB format version 9
+then you need to take a look at your redis version and if it is not upto date then remove and install the stable version of redis
